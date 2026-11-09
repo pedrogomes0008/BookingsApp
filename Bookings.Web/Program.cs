@@ -1,5 +1,7 @@
+using Bookings.Core;
 using Bookings.Infrastructure;
 using Bookings.Web.Components;
+using Bookings.Web.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
@@ -26,5 +29,7 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapBookingEndpoints();
 
 app.Run();
