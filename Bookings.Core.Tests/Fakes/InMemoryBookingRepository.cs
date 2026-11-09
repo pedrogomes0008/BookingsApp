@@ -7,6 +7,8 @@ public class InMemoryBookingRepository : IBookingRepository
 {
     private readonly Dictionary<Guid, Booking> _bookings = [];
 
+    public List<Booking> SavedBookings { get; } = [];
+
     public Task<Booking?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return Task.FromResult(_bookings.GetValueOrDefault(id));
@@ -24,6 +26,7 @@ public class InMemoryBookingRepository : IBookingRepository
         if (_bookings.ContainsKey(booking.Id))
         {
             _bookings[booking.Id] = booking;
+            SavedBookings.Add(booking);
         }
 
         return Task.CompletedTask;
