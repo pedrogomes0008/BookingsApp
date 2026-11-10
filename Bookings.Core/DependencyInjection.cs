@@ -9,6 +9,7 @@ public static class DependencyInjection
     {
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<BookingActionService>();
+        services.AddScoped<BookingRequestService>();
 
         return services;
     }
