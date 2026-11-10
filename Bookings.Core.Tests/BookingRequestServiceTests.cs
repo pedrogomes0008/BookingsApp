@@ -1,6 +1,7 @@
 using Bookings.Core.Application.Bookings;
 using Bookings.Core.Domain.Bookings;
 using Bookings.Core.Tests.Fakes;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 
 namespace Bookings.Core.Tests;
@@ -14,7 +15,8 @@ public class BookingRequestServiceTests
         var now = new DateTimeOffset(2026, 11, 4, 10, 0, 0, TimeSpan.Zero);
         var timeProvider = new FakeTimeProvider(now);
         var bookingRepository = new InMemoryBookingRepository();
-        var service = new BookingRequestService(timeProvider, TimeSpan.FromHours(24), bookingRepository);
+        var options = Options.Create(new BookingSettings { MaxApprovalWindowHours = 24 });
+        var service = new BookingRequestService(timeProvider, bookingRepository, options);
 
         var startsAt = now.AddDays(1);
         var duration = TimeSpan.FromMinutes(60);
@@ -34,7 +36,8 @@ public class BookingRequestServiceTests
         var now = new DateTimeOffset(2026, 11, 4, 10, 0, 0, TimeSpan.Zero);
         var timeProvider = new FakeTimeProvider(now);
         var bookingRepository = new InMemoryBookingRepository();
-        var service = new BookingRequestService(timeProvider, TimeSpan.FromHours(24), bookingRepository);
+        var options = Options.Create(new BookingSettings { MaxApprovalWindowHours = 24 });
+        var service = new BookingRequestService(timeProvider, bookingRepository, options);
         var startsAt = now.AddHours(1);
         var duration = TimeSpan.FromMinutes(60);
 
@@ -53,7 +56,8 @@ public class BookingRequestServiceTests
         var now = new DateTimeOffset(2026, 11, 4, 10, 0, 0, TimeSpan.Zero);
         var timeProvider = new FakeTimeProvider(now);
         var bookingRepository = new InMemoryBookingRepository();
-        var service = new BookingRequestService(timeProvider, TimeSpan.FromHours(24), bookingRepository);
+        var options = Options.Create(new BookingSettings { MaxApprovalWindowHours = 24 });
+        var service = new BookingRequestService(timeProvider, bookingRepository, options);
         var startsAt = now.AddDays(1);
         var duration = TimeSpan.FromMinutes(60);
 

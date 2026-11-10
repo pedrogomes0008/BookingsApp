@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:5176
+
+### Approve
+POST {{baseUrl}}/api/bookings/2BE44C38-C774-4096-A2C2-F7D66B3C633E/approve
+
+### Reject
+POST {{baseUrl}}/api/bookings/3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90/reject
+
+### Cancel
+POST {{baseUrl}}/api/bookings/3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90/cancel
+
+### Mark No Show
+POST {{baseUrl}}/api/bookings/3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90/no-show
+
+### Reschedule
+POST {{baseUrl}}/api/bookings/3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90/reschedule
+Content-Type: application/json
+
+{ "newStartsAt": "isto não é uma data" }
+
+### Get
+GET  {{baseUrl}}/api/bookings/23691d97-f2a1-4f08-831c-e1fb746ae19e
+
+### Create a booking
+POST {{baseUrl}}/api/bookings/
+Content-Type: application/json
+
+{ "startsAt": "2026-11-15T10:00:00Z", "durationMinutes": 60 }
+
+### Create a booking - date on the pass
+POST {{baseUrl}}/api/bookings/
+Content-Type: application/json
+
+{ "startsAt": "2026-11-09T10:00:00Z", "durationMinutes": 60 }
+
+### Create a booking - duration equal to 0
+POST {{baseUrl}}/api/bookings/
+Content-Type: application/json
+
+{ "startsAt": "2026-11-16T10:00:00Z", "durationMinutes": 0 }

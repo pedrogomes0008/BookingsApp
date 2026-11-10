@@ -80,7 +80,7 @@ public class BookingTests
         booking.Approve();
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Approve());
+        Assert.Throws<BookingStateException>(() => booking.Approve());
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class BookingTests
         booking.Approve();
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Reject());
+        Assert.Throws<BookingStateException>(() => booking.Reject());
     }
 
     [Fact]
@@ -115,7 +115,7 @@ public class BookingTests
         booking.Reject();
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Approve());
+        Assert.Throws<BookingStateException>(() => booking.Approve());
     }
 
     [Fact]
@@ -140,7 +140,7 @@ public class BookingTests
         var now = booking.StartsAt.AddMinutes(30);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Cancel(now));
+        Assert.Throws<BookingStateException>(() => booking.Cancel(now));
     }
 
     [Fact]
@@ -151,7 +151,7 @@ public class BookingTests
         var now = booking.StartsAt.AddMinutes(-30);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Cancel(now));
+        Assert.Throws<BookingStateException>(() => booking.Cancel(now));
     }
 
     [Fact]
@@ -162,7 +162,7 @@ public class BookingTests
         var now = booking.StartsAt;
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Cancel(now));
+        Assert.Throws<BookingStateException>(() => booking.Cancel(now));
     }
 
     [Fact]
@@ -187,7 +187,7 @@ public class BookingTests
         var now = booking.StartsAt.AddMinutes(-30);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.MarkNoShow(now));
+        Assert.Throws<BookingStateException>(() => booking.MarkNoShow(now));
     }
 
     [Fact]
@@ -198,7 +198,7 @@ public class BookingTests
         var now = booking.StartsAt.AddMinutes(30);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.MarkNoShow(now));
+        Assert.Throws<BookingStateException>(() => booking.MarkNoShow(now));
     }
 
     [Fact]
@@ -305,7 +305,7 @@ public class BookingTests
         var now = booking.ExpiresAt.AddMinutes(-10);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Expire(now));
+        Assert.Throws<BookingStateException>(() => booking.Expire(now));
     }
 
     [Fact]
@@ -316,7 +316,7 @@ public class BookingTests
         var now = booking.ExpiresAt.AddMinutes(10);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Expire(now));
+        Assert.Throws<BookingStateException>(() => booking.Expire(now));
     }
 
     [Fact]
@@ -376,7 +376,7 @@ public class BookingTests
         var newStart = booking.StartsAt.AddDays(2);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Reschedule(newStart, now));
+        Assert.Throws<BookingStateException>(() => booking.Reschedule(newStart, now));
     }
 
     [Fact]
@@ -388,7 +388,7 @@ public class BookingTests
         var newStart = booking.StartsAt.AddDays(2);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Reschedule(newStart, now));
+        Assert.Throws<BookingStateException>(() => booking.Reschedule(newStart, now));
     }
 
     [Fact]
@@ -400,7 +400,7 @@ public class BookingTests
         var newStart = booking.StartsAt.AddDays(2);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Reschedule(newStart, now));
+        Assert.Throws<BookingStateException>(() => booking.Reschedule(newStart, now));
     }
 
     [Fact]
@@ -413,7 +413,7 @@ public class BookingTests
         booking.Cancel(now);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => booking.Reschedule(newStart, now));
+        Assert.Throws<BookingStateException>(() => booking.Reschedule(newStart, now));
     }
 
     [Fact]
