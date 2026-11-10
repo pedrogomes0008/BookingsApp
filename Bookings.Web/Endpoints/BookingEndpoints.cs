@@ -1,4 +1,5 @@
 using Bookings.Core.Application.Bookings;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Bookings.Web.Endpoints;
 
@@ -36,6 +37,15 @@ public static class BookingEndpoints
         {
             await service.RescheduleAsync(id, request.NewStartsAt, cancellationToken);
             return TypedResults.NoContent();
+        });
+
+        group.MapGet("/{id:guid}", async Task<Results<Ok<BookingResponse>, NotFound>> (Guid id, IBookingRepository repository, CancellationToken cancellationToken) =>
+        {
+            var booking = await repository.GetByIdAsync(id, cancellationToken);
+
+            if (booking is null) return TypedResults.NotFound();
+
+            return TypedResults.Ok(BookingResponse.From(booking));
         });
 
         return app;
