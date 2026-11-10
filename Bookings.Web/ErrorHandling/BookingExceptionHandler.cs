@@ -20,6 +20,7 @@ public class BookingExceptionHandler : IExceptionHandler
             BookingNotFoundException => StatusCodes.Status404NotFound,
             ArgumentException => StatusCodes.Status400BadRequest,
             BookingStateException => StatusCodes.Status409Conflict,
+            BadHttpRequestException badRequest => badRequest.StatusCode,
             _ => (int?)null
         };
 

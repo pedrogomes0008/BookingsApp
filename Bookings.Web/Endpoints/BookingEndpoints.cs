@@ -14,6 +14,30 @@ public static class BookingEndpoints
             return TypedResults.NoContent();
         });
 
+        group.MapPost("/{id:guid}/reject", async (Guid id, BookingActionService service, CancellationToken cancellationToken) =>
+        {
+            await service.RejectAsync(id, cancellationToken);
+            return TypedResults.NoContent();
+        });
+
+        group.MapPost("/{id:guid}/cancel", async (Guid id, BookingActionService service, CancellationToken cancellationToken) =>
+        {
+            await service.CancelAsync(id, cancellationToken);
+            return TypedResults.NoContent();
+        });
+
+        group.MapPost("/{id:guid}/no-show", async (Guid id, BookingActionService service, CancellationToken cancellationToken) =>
+        {
+            await service.MarkNoShowAsync(id, cancellationToken);
+            return TypedResults.NoContent();
+        });
+
+        group.MapPost("/{id:guid}/reschedule", async (Guid id, RescheduleBookingRequest request, BookingActionService service, CancellationToken cancellationToken) =>
+        {
+            await service.RescheduleAsync(id, request.NewStartsAt, cancellationToken);
+            return TypedResults.NoContent();
+        });
+
         return app;
     }
 }
