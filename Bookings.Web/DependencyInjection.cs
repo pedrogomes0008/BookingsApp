@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.ConfigureHttpJsonOptions(options =>
                                           options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+        services.AddValidation();
         services.AddProblemDetails();
         services.AddExceptionHandler<BookingExceptionHandler>();
 

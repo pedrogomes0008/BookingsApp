@@ -31,10 +31,17 @@ Content-Type: application/json
 POST {{baseUrl}}/api/bookings/
 Content-Type: application/json
 
-{ "startsAt": "2026-11-09T10:00:00Z", "durationMinutes": 60 }
+{ "startsAt": "2026-11-16T10:00:00Z", "durationMinutes": 60 }
 
 ### Create a booking - duration equal to 0
 POST {{baseUrl}}/api/bookings/
 Content-Type: application/json
 
 { "startsAt": "2026-11-16T10:00:00Z", "durationMinutes": 0 }
+
+
+### Create a booking - Testing
+POST {{baseUrl}}/api/bookings/
+Content-Type: application/json
+
+{ "durationMinutes": 60}
