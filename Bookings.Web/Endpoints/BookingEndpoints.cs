@@ -35,7 +35,7 @@ public static class BookingEndpoints
 
         group.MapPost("/{id:guid}/reschedule", async (Guid id, RescheduleBookingRequest request, BookingActionService service, CancellationToken cancellationToken) =>
         {
-            await service.RescheduleAsync(id, request.NewStartsAt, cancellationToken);
+            await service.RescheduleAsync(id, request.NewStartsAt.Value, cancellationToken);
             return TypedResults.NoContent();
         });
 
