@@ -48,6 +48,12 @@ public static class BookingEndpoints
             return TypedResults.Ok(BookingResponse.From(booking));
         });
 
+        group.MapPost("/", async (CreateBookingRequest request, BookingRequestService service, CancellationToken cancellationToken) =>
+        {
+            var booking = await service.RequestAsync(request.StartsAt, TimeSpan.FromMinutes(request.DurationMinutes), cancellationToken);
+            return TypedResults.Created($"/api/bookings/{booking.Id}", BookingResponse.From(booking));
+        });
+
         return app;
     }
 }
