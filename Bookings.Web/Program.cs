@@ -1,5 +1,6 @@
 using Bookings.Core;
 using Bookings.Infrastructure;
+using Bookings.Web;
 using Bookings.Web.Components;
 using Bookings.Web.Endpoints;
 
@@ -11,13 +12,14 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddWebServices();
 
 var app = builder.Build();
 
+app.UseExceptionHandler("/Error", createScopeForErrors: true);
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
