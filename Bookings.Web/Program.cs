@@ -17,7 +17,13 @@ builder.Services.AddWebServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseExceptionHandler("/Error", createScopeForErrors: true);
+app.UseWhen(
+    context => context.Request.Path.StartsWithSegments("/api"),
+    api => api.UseExceptionHandler());
+
+app.UseWhen(
+    context => !context.Request.Path.StartsWithSegments("/api"),
+    site => site.UseExceptionHandler("/Error", createScopeForErrors: true));
 
 if (!app.Environment.IsDevelopment())
 {
