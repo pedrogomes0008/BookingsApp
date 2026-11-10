@@ -65,7 +65,7 @@ public class BookingActionServiceTests
         _timeProvider.Advance(TimeSpan.FromHours(2));
 
         // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.CancelAsync(booking.Id, CancellationToken.None));
+        await Assert.ThrowsAsync<BookingStateException>(() => _service.CancelAsync(booking.Id, CancellationToken.None));
         Assert.Empty(_repository.SavedBookings);
     }
 

@@ -2,7 +2,7 @@ using Bookings.Web.ErrorHandling;
 
 namespace Bookings.Web;
 
-public static class DependecyInjection
+public static class DependencyInjection
 {
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {

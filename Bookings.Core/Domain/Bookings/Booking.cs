@@ -58,7 +58,7 @@ public class Booking
     {
         if (Status != BookingStatus.Pending)
         {
-            throw new InvalidOperationException("Only pending bookings can be approved.");
+            throw new BookingStateException("Only pending bookings can be approved.");
         }
 
         Status = BookingStatus.Confirmed;
@@ -68,7 +68,7 @@ public class Booking
     {
         if (Status != BookingStatus.Pending)
         {
-            throw new InvalidOperationException("Only pending bookings can be rejected.");
+            throw new BookingStateException("Only pending bookings can be rejected.");
         }
 
         Status = BookingStatus.Rejected;
@@ -78,12 +78,12 @@ public class Booking
     {
         if (Status != BookingStatus.Confirmed)
         {
-            throw new InvalidOperationException("Only confirmed bookings can be cancelled.");
+            throw new BookingStateException("Only confirmed bookings can be cancelled.");
         }
 
         if (now >= StartsAt)
         {
-            throw new InvalidOperationException("Bookings that already started cannot be cancelled.");
+            throw new BookingStateException("Bookings that already started cannot be cancelled.");
         }
 
         Status = BookingStatus.Cancelled;
@@ -93,12 +93,12 @@ public class Booking
     {
         if (Status != BookingStatus.Confirmed)
         {
-            throw new InvalidOperationException("Only confirmed bookings can be marked as no-show.");
+            throw new BookingStateException("Only confirmed bookings can be marked as no-show.");
         }
 
         if (now < StartsAt)
         {
-            throw new InvalidOperationException("Bookings that have not started cannot be marked as no-show.");
+            throw new BookingStateException("Bookings that have not started cannot be marked as no-show.");
         }
 
         Status = BookingStatus.NoShow;
@@ -108,12 +108,12 @@ public class Booking
     {
         if (Status != BookingStatus.Pending)
         {
-            throw new InvalidOperationException("Only pending bookings can be expired.");
+            throw new BookingStateException("Only pending bookings can be expired.");
         }
 
         if (now < ExpiresAt)
         {
-            throw new InvalidOperationException("Bookings cannot be expired before their approval deadline.");
+            throw new BookingStateException("Bookings cannot be expired before their approval deadline.");
         }
 
         Status = BookingStatus.Expired;
@@ -133,12 +133,12 @@ public class Booking
 
         if (Status is not (BookingStatus.Pending or BookingStatus.Confirmed or BookingStatus.Expired))
         {
-            throw new InvalidOperationException("Only pending, expired or confirmed bookings can be rescheduled.");
+            throw new BookingStateException("Only pending, expired or confirmed bookings can be rescheduled.");
         }
 
         if (Status is BookingStatus.Confirmed && now >= StartsAt)
         {
-            throw new InvalidOperationException("Bookings that already started cannot be rescheduled.");
+            throw new BookingStateException("Bookings that already started cannot be rescheduled.");
         }
 
 
