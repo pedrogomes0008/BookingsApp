@@ -3,6 +3,7 @@ using Bookings.Infrastructure;
 using Bookings.Web;
 using Bookings.Web.Components;
 using Bookings.Web.Endpoints;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,12 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
 
 app.MapBookingEndpoints();
 
