@@ -35,7 +35,7 @@ public static class BookingEndpoints
 
         group.MapPost("/{id:guid}/reschedule", async (Guid id, RescheduleBookingRequest request, BookingActionService service, CancellationToken cancellationToken) =>
         {
-            await service.RescheduleAsync(id, request.NewStartsAt, cancellationToken);
+            await service.RescheduleAsync(id, request.NewStartsAt.Value, cancellationToken);
             return TypedResults.NoContent();
         });
 
@@ -50,7 +50,7 @@ public static class BookingEndpoints
 
         group.MapPost("/", async (CreateBookingRequest request, BookingRequestService service, CancellationToken cancellationToken) =>
         {
-            var booking = await service.RequestAsync(request.StartsAt, TimeSpan.FromMinutes(request.DurationMinutes), cancellationToken);
+            var booking = await service.RequestAsync(request.StartsAt.Value, TimeSpan.FromMinutes(request.DurationMinutes.Value), cancellationToken);
             return TypedResults.Created($"/api/bookings/{booking.Id}", BookingResponse.From(booking));
         });
 

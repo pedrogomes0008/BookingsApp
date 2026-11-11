@@ -13,10 +13,10 @@ POST {{baseUrl}}/api/bookings/3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90/cancel
 POST {{baseUrl}}/api/bookings/3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90/no-show
 
 ### Reschedule
-POST {{baseUrl}}/api/bookings/3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90/reschedule
+POST {{baseUrl}}/api/bookings/23691d97-f2a1-4f08-831c-e1fb746ae19e/reschedule
 Content-Type: application/json
 
-{ "newStartsAt": "isto não é uma data" }
+{ }
 
 ### Get
 GET  {{baseUrl}}/api/bookings/23691d97-f2a1-4f08-831c-e1fb746ae19e
@@ -31,10 +31,17 @@ Content-Type: application/json
 POST {{baseUrl}}/api/bookings/
 Content-Type: application/json
 
-{ "startsAt": "2026-11-09T10:00:00Z", "durationMinutes": 60 }
+{ "startsAt": "2026-11-16T10:00:00Z", "durationMinutes": 60 }
 
 ### Create a booking - duration equal to 0
 POST {{baseUrl}}/api/bookings/
 Content-Type: application/json
 
 { "startsAt": "2026-11-16T10:00:00Z", "durationMinutes": 0 }
+
+
+### Create a booking - Testing
+POST {{baseUrl}}/api/bookings/
+Content-Type: application/json
+
+{ "durationMinutes": 60}
