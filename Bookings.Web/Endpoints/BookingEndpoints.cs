@@ -7,37 +7,49 @@ public static class BookingEndpoints
 {
     public static IEndpointRouteBuilder MapBookingEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/bookings");
+        var group = app.MapGroup("/api/bookings")
+        .WithTags("Bookings");
 
         group.MapPost("/{id:guid}/approve", async (Guid id, BookingActionService service, CancellationToken cancellationToken) =>
         {
             await service.ApproveAsync(id, cancellationToken);
             return TypedResults.NoContent();
-        });
+        })
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status409Conflict);
 
         group.MapPost("/{id:guid}/reject", async (Guid id, BookingActionService service, CancellationToken cancellationToken) =>
         {
             await service.RejectAsync(id, cancellationToken);
             return TypedResults.NoContent();
-        });
+        })
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status409Conflict);
 
         group.MapPost("/{id:guid}/cancel", async (Guid id, BookingActionService service, CancellationToken cancellationToken) =>
         {
             await service.CancelAsync(id, cancellationToken);
             return TypedResults.NoContent();
-        });
+        })
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status409Conflict);
 
         group.MapPost("/{id:guid}/no-show", async (Guid id, BookingActionService service, CancellationToken cancellationToken) =>
         {
             await service.MarkNoShowAsync(id, cancellationToken);
             return TypedResults.NoContent();
-        });
+        })
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status409Conflict);
 
         group.MapPost("/{id:guid}/reschedule", async (Guid id, RescheduleBookingRequest request, BookingActionService service, CancellationToken cancellationToken) =>
         {
             await service.RescheduleAsync(id, request.NewStartsAt.Value, cancellationToken);
             return TypedResults.NoContent();
-        });
+        })
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status409Conflict)
+        .ProducesValidationProblem();
 
         group.MapGet("/{id:guid}", async Task<Results<Ok<BookingResponse>, NotFound>> (Guid id, IBookingRepository repository, CancellationToken cancellationToken) =>
         {
@@ -52,7 +64,8 @@ public static class BookingEndpoints
         {
             var booking = await service.RequestAsync(request.StartsAt.Value, TimeSpan.FromMinutes(request.DurationMinutes.Value), cancellationToken);
             return TypedResults.Created($"/api/bookings/{booking.Id}", BookingResponse.From(booking));
-        });
+        })
+        .ProducesValidationProblem();
 
         return app;
     }

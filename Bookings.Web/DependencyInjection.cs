@@ -22,6 +22,8 @@ public static class DependencyInjection
         services.AddProblemDetails();
         services.AddExceptionHandler<BookingExceptionHandler>();
 
+        services.AddOpenApi();
+
         return services;
     }
 }

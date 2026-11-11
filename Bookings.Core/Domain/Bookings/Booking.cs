@@ -141,7 +141,6 @@ public class Booking
             throw new BookingStateException("Bookings that already started cannot be rescheduled.");
         }
 
-
         StartsAt = newStartsAt;
         Status = BookingStatus.Confirmed;
     }
