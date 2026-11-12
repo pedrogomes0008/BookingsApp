@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Bookings.Core.Domain.Bookings;
 using Bookings.Web.Endpoints;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bookings.Web.Tests;
 
@@ -44,16 +45,7 @@ public class BookingWebApplicationTests : IClassFixture<BookingsApiFactory>
     {
         // Arrange
         var client = _factory.CreateClient();
-        var response = await client.PostAsJsonAsync("/api/bookings",
-                    new
-                    {
-                        startsAt = DateTimeOffset.UtcNow.AddDays(2),
-                        durationMinutes = 60
-                    });
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-
-        var location = response.Headers.Location;
-        Assert.NotNull(location);
+        var location = await CreatePendingBookingAsync(client);
 
         // Act
         var approveResponse = await client.PostAsync($"{location}/approve", null);
@@ -63,5 +55,58 @@ public class BookingWebApplicationTests : IClassFixture<BookingsApiFactory>
         var bookingResponse = await client.GetFromJsonAsync<BookingResponse>(location, JsonOptions);
         Assert.NotNull(bookingResponse);
         Assert.Equal(BookingStatus.Confirmed, bookingResponse.Status);
+    }
+
+    [Fact]
+    public async Task Approve_UnexistingBooking_ReturnsNotFound()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+        var bookingId = Guid.NewGuid();
+
+        // Act
+        var response = await client.PostAsync($"/api/bookings/{bookingId}/approve", null);
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(JsonOptions);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.NotNull(problemDetails);
+        Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
+    }
+
+    [Fact]
+    public async Task Approve_ApprovedBooking_ReturnsConflict()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+        var location = await CreatePendingBookingAsync(client);
+
+        var approveResponse = await client.PostAsync($"{location}/approve", null);
+        Assert.Equal(HttpStatusCode.NoContent, approveResponse.StatusCode);
+
+        // Act
+        var approveAgain = await client.PostAsync($"{location}/approve", null);
+        var problemDetails = await approveAgain.Content.ReadFromJsonAsync<ProblemDetails>(JsonOptions);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.Conflict, approveAgain.StatusCode);
+        Assert.NotNull(problemDetails);
+        Assert.Equal(StatusCodes.Status409Conflict, problemDetails.Status);
+    }
+
+    private static async Task<Uri> CreatePendingBookingAsync(HttpClient client)
+    {
+        var response = await client.PostAsJsonAsync("/api/bookings",
+                    new
+                    {
+                        startsAt = DateTimeOffset.UtcNow.AddDays(2),
+                        durationMinutes = 60
+                    });
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        var location = response.Headers.Location;
+        Assert.NotNull(location);
+
+        return location;
     }
 }
