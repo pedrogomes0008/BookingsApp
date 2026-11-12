@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bookings.Web\Bookings.Web.csproj" />
+    <ProjectReference Include="..\Bookings.Tests.Shared\Bookings.Tests.Shared.csproj" />
   </ItemGroup>
 
 </Project>

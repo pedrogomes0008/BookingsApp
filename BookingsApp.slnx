@@ -3,6 +3,7 @@
   <Project Path="Bookings.Infrastructure.Tests/Bookings.Infrastructure.Tests.csproj" />
   <Project Path="Bookings.Core/Bookings.Core.csproj" />
   <Project Path="Bookings.Infrastructure/Bookings.Infrastructure.csproj" />
+  <Project Path="Bookings.Tests.Shared/Bookings.Tests.Shared.csproj" />
   <Project Path="Bookings.Web.Tests/Bookings.Web.Tests.csproj" />
   <Project Path="Bookings.Web/Bookings.Web.csproj" />
 </Solution>

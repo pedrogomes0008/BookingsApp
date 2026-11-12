@@ -1,7 +1,7 @@
 using Bookings.Core.Application.Bookings;
 using Bookings.Core.Domain.Bookings;
 
-namespace Bookings.Core.Tests.Fakes;
+namespace Bookings.Tests.Shared.Fakes;
 
 public class InMemoryBookingRepository : IBookingRepository
 {

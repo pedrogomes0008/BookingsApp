@@ -1,6 +1,6 @@
 using Bookings.Core.Application.Bookings;
 using Bookings.Core.Domain.Bookings;
-using Bookings.Core.Tests.Fakes;
+using Bookings.Tests.Shared.Fakes;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 
