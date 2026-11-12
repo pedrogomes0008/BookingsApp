@@ -15,6 +15,7 @@ public static class DependencyInjection
 
         services.AddDbContext<BookingsDbContext>(options => options.UseSqlServer(connectionString));
         services.AddScoped<IBookingRepository, EfBookingRepository>();
+        services.AddScoped<IBookingQueries, EfBookingQueries>();
 
         return services;
     }
