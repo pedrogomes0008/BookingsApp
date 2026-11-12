@@ -1,4 +1,5 @@
 using Bookings.Core.Application.Bookings;
+using Bookings.Web.Endpoints.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Bookings.Web.Endpoints;
@@ -64,6 +65,19 @@ public static class BookingEndpoints
         {
             var booking = await service.RequestAsync(request.StartsAt.Value, TimeSpan.FromMinutes(request.DurationMinutes.Value), cancellationToken);
             return TypedResults.Created($"/api/bookings/{booking.Id}", BookingResponse.From(booking));
+        })
+        .ProducesValidationProblem();
+
+        group.MapGet("/", async ([AsParameters] ListBookingsRequest request, IBookingQueries queries, CancellationToken cancellationToken) =>
+        {
+            var query = new BookingListQuery(request.Status, request.From, request.To, request.Page, request.PageSize);
+
+            var result = await queries.ListBookingsAsync(query, cancellationToken);
+            var items = result.Items.Select(item => BookingResponse.From(item)).ToList();
+
+            var response = new PagedResponse<BookingResponse>(items, result.Page, result.PageSize, result.TotalCount);
+
+            return TypedResults.Ok(response);
         })
         .ProducesValidationProblem();
 

@@ -45,3 +45,12 @@ POST {{baseUrl}}/api/bookings/
 Content-Type: application/json
 
 { "durationMinutes": 60}
+
+### Get - no parameters
+GET  {{baseUrl}}/api/bookings
+
+### Get - status pending
+GET  {{baseUrl}}/api/bookings?status=Pending
+
+### Get - status pending
+GET  {{baseUrl}}/api/bookings?page=2&pageSize=1
